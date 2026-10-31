@@ -1,7 +1,81 @@
-go >= 1.22
-subfinder
-httpx
-gau
-nuclei
-qsreplace
+# ═══════════════════════════════════════════════════════════════════
+#  RECONIC v8.1 — dependency manifest
+#  Inayat Hussain · Red Team Operator · Penetration Tester
+#
+#  Install everything at once:
+#      ./Reconicv8.sh install
+#
+#  Verify the toolchain afterwards:
+#      ./Reconicv8.sh verify
+#
+#  Platform: Kali / Parrot / Debian / Ubuntu / Arch / Fedora / macOS
+#  Shell:    bash >= 4.0 (macOS needs: brew install bash)
+# ═══════════════════════════════════════════════════════════════════
+
+# ── system packages (apt) ───────────────────────────────────────────
+# debian/ubuntu/kali/parrot
+curl
+wget
+git
 jq
+unzip
+python3
+python3-pip
+dnsutils
+whois
+ca-certificates
+libpcap-dev            # naabu raw sockets
+
+# arch
+# pacman: curl wget git jq unzip python python-pip dnsutils whois libpcap
+
+# fedora/rhel
+# dnf: curl wget git jq unzip python3 python3-pip bind-utils whois libpcap-devel
+
+# ── runtime ─────────────────────────────────────────────────────────
+golang-go              # go >= 1.21 — required to build the toolchain
+bash                   # >= 4.0 — macOS: brew install bash
+
+# ── go toolchain (installed via `go install`) ───────────────────────
+# recon
+github.com/projectdiscovery/subfinder/v2/cmd/subfinder
+github.com/tomnomnom/assetfinder
+github.com/projectdiscovery/dnsx/cmd/dnsx
+github.com/projectdiscovery/httpx/cmd/httpx
+github.com/projectdiscovery/tlsx/cmd/tlsx
+github.com/projectdiscovery/katana/cmd/katana
+github.com/lc/gau/v2/cmd/gau
+github.com/tomnomnom/waybackurls
+github.com/projectdiscovery/cdncheck/cmd/cdncheck
+
+# detection
+github.com/projectdiscovery/nuclei/v3/cmd/nuclei
+github.com/ffuf/ffuf/v2
+github.com/projectdiscovery/interactsh/cmd/interactsh-client
+
+# utilities
+github.com/tomnomnom/qsreplace
+github.com/tomnomnom/anew
+github.com/tomnomnom/unfurl
+
+# ── python packages ─────────────────────────────────────────────────
+# used for URL encoding chains and JWT HMAC verification
+# install with: pip3 install -r requirements.txt --break-system-packages
+urllib3>=2.0.0
+requests>=2.31.0
+
+# ── wordlists (auto-fetched by `install`) ───────────────────────────
+# ~/.reconic/wordlists/dir.txt     raft-medium-files  (directory brute)
+# ~/.reconic/wordlists/dns.txt     top 20k subdomains (sub brute)
+# ~/.reconic/wordlists/vhost.txt   top 5k subdomains  (vhost fuzz)
+# ~/.reconic/wordlists/pass.txt    top 10k passwords  (JWT cracking)
+#
+# override any of them at runtime:  -w /path/to/list.txt
+
+# ── nuclei templates ────────────────────────────────────────────────
+# fetched by `./Reconicv8.sh install`
+# refresh later with:  ./Reconicv8.sh update
+
+# ── optional ────────────────────────────────────────────────────────
+massdns                # faster brute resolution
+seclists               # apt install seclists — larger wordlists
